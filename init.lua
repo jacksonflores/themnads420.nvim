@@ -201,16 +201,21 @@ require('lazy').setup({
   },
 
   {
+    "catppuccin/nvim", name = "catppuccin", priority = 1001, lazy = false,
+    config = function()
+      require('catppuccin').setup {}
+      require('catppuccin').load()
+    end,
+  },
+  {
     -- Theme inspired by Atom
     'navarasu/onedark.nvim',
     priority = 1000,
-    lazy = false,
     config = function()
       require('onedark').setup {
         -- Set a style preset. 'dark' is default.
         style = 'dark', -- dark, darker, cool, deep, warm, warmer, light
       }
-      require('onedark').load()
     end,
   },
 
@@ -282,13 +287,16 @@ require('lazy').setup({
   --    Uncomment the following line and add your plugins to `lua/custom/plugins/*.lua` to get going.
   --
   --    For additional information see: https://github.com/folke/lazy.nvim#-structuring-your-plugins
-  -- { import = 'custom.plugins' },
-}, {})
+  { import = 'custom.plugins' },
+
+  }, {})
 
 -- [[ Setting options ]]
 -- See `:help vim.o`
 -- NOTE: You can change these options as you wish!
 
+--Import my keymaps
+require('custom.keymaps')
 -- Set highlight on search
 vim.o.hlsearch = false
 
@@ -432,7 +440,6 @@ vim.keymap.set('n', '<leader>sg', require('telescope.builtin').live_grep, { desc
 vim.keymap.set('n', '<leader>sG', ':LiveGrepGitRoot<cr>', { desc = '[S]earch by [G]rep on Git Root' })
 vim.keymap.set('n', '<leader>sd', require('telescope.builtin').diagnostics, { desc = '[S]earch [D]iagnostics' })
 vim.keymap.set('n', '<leader>sr', require('telescope.builtin').resume, { desc = '[S]earch [R]esume' })
-
 -- [[ Configure Treesitter ]]
 -- See `:help nvim-treesitter`
 -- Defer Treesitter setup after first render to improve startup time of 'nvim {filename}'
@@ -679,6 +686,8 @@ cmp.setup {
     { name = 'path' },
   },
 }
+
+vim.filetype.add({ extension = { templ = "templ" } })
 
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
